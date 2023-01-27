@@ -15,8 +15,7 @@
         <activity
             android:name=".ExampleAppWidgetConfig"
             android:exported="false" >
-            <intent-filter
-                >
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
@@ -30,9 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+
         </activity>
 
         <receiver

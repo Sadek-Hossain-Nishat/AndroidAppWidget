@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RemoteViews;
 
 public class ExampleAppWidgetConfig extends AppCompatActivity {
 
-    public static final String SHARED_PRESS = "prefs";
+    public static final String SHARED_PRES = "prefs";
     public static final String KEY_BUTTON_TEXT = "keyButtonText";
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -32,7 +33,13 @@ public class ExampleAppWidgetConfig extends AppCompatActivity {
         if (extras!=null) {
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
+            Log.i("debug", "ExampleAppWidgetConfig->onCreate function called when extras is not null: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID));
         }
+
+
+        Log.i("debug", "ExampleAppWidgetConfig->onCreate: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID));
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
@@ -41,6 +48,8 @@ public class ExampleAppWidgetConfig extends AppCompatActivity {
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 
             finish();
+            Log.i("debug", "ExampleAppWidgetConfig->onCreate when invalid appwidget id: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID));
 
         }
 
@@ -59,11 +68,14 @@ public class ExampleAppWidgetConfig extends AppCompatActivity {
         views.setCharSequence(R.id.id_example_widget_button,"setText",buttonText);
         views.setInt(R.id.id_example_widget_button,"setBackgroundColor",
                 Color.RED);
-        views.setBoolean(R.id.id_example_widget_button,"setEnabled",false);
+        views.setBoolean(R.id.id_example_widget_button,"setEnabled",true);
+
+
         appWidgetManager.updateAppWidget(appWidgetId,views);
-        SharedPreferences prefs = getSharedPreferences(SHARED_PRESS,MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(SHARED_PRES,MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(KEY_BUTTON_TEXT+appWidgetId,buttonText);
+        Log.i("debug", "ExampleAppWidgetConfig->onCreate: "+  buttonText);
         editor.apply();
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
