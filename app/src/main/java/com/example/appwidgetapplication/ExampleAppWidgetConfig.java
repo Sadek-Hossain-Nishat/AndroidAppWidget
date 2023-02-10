@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,12 +64,24 @@ public class ExampleAppWidgetConfig extends AppCompatActivity {
 
         String buttonText = editTextButton.getText().toString();
 
+        Intent serviceIntent = new Intent(this,ExampleWidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
         RemoteViews views = new RemoteViews(this.getPackageName(),R.layout.example_widget);
         views.setOnClickPendingIntent(R.id.id_example_widget_button,pendingIntent);
         views.setCharSequence(R.id.id_example_widget_button,"setText",buttonText);
-        views.setInt(R.id.id_example_widget_button,"setBackgroundColor",
-                Color.RED);
-        views.setBoolean(R.id.id_example_widget_button,"setEnabled",true);
+        views.setRemoteAdapter(R.id.example_widget_stack_view,serviceIntent);
+        views.setEmptyView(R.id.example_widget_stack_view,R.id.example_widget_empty_view);
+
+
+
+
+
+
+//        views.setInt(R.id.id_example_widget_button,"setBackgroundColor",
+//                Color.RED);
+//        views.setBoolean(R.id.id_example_widget_button,"setEnabled",true);
 
 
         appWidgetManager.updateAppWidget(appWidgetId,views);

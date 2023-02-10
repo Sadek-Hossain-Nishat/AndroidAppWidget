@@ -2,13 +2,15 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:configure="com.example.appwidgetapplication.ExampleAppWidgetConfig"
     android:initialLayout="@layout/example_widget"
-    android:minHeight="40dp"
-    android:minResizeWidth="40dp"
+    android:minHeight="110dp"
+    android:minResizeHeight="40dp"
+
     android:minWidth="110dp"
     android:previewImage="@drawable/widget_preview"
     android:resizeMode="vertical|horizontal"
     android:updatePeriodMillis="3600000"
-    android:widgetCategory="home_screen">
+    android:widgetCategory="home_screen"
+    android:autoAdvanceViewId="@id/example_widget_stack_view"/>
 
-</appwidget-provider>
+
 <!--    android:initialLayout="@layout/example_widget"-->

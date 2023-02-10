@@ -1,0 +1,543 @@
+# AndroidManifest.xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppWidgetApplication"
+        tools:targetApi="31">
+        <activity
+            android:name=".ExampleAppWidgetConfig"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+
+        <receiver
+            android:name=".ExampleAppWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/example_appwidget_info" />
+        </receiver>
+
+        <service android:name=".ExampleWidgetService"
+             android:permission="android.permission.BIND_REMOTEVIEWS"/>
+    </application>
+
+</manifest>
+
+# gradient.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient
+        android:angle="90"
+        android:endColor="#044fab"
+        android:startColor="#9cefee"/>
+
+</shape>
+
+# activity_example_app_widget_config.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".ExampleAppWidgetConfig">
+
+    <EditText
+        android:id="@+id/id_edit_text_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Button text"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:onClick="confirmConfiguration"/>
+
+
+
+
+</LinearLayout>
+
+
+# activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+# example_widget.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/id_example_widget_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Widget"
+        android:background="#fff"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+
+    <Button
+        android:id="@+id/id_example_widget_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Press me" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<!--        <StackView-->
+<!--            android:id="@+id/example_widget_stack_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:loopViews="true"/>  -->
+        <ListView
+            android:id="@+id/example_widget_stack_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:loopViews="true"/>
+
+<!--        if put listview instead of stackview it will show list let's try again-->
+        <TextView
+            android:id="@+id/example_widget_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            android:text="Empty"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </FrameLayout>
+
+</LinearLayout>
+
+# example_widget_item.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/example_widget_item_text"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:background="@drawable/gradient"
+    android:gravity="center"
+    android:text="Item"
+    android:textColor="@android:color/white"
+    android:textSize="20sp"
+    android:textStyle="bold" />
+
+# xml/example_appwidget_info.xml
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.example.appwidgetapplication.ExampleAppWidgetConfig"
+    android:initialLayout="@layout/example_widget"
+    android:minHeight="110dp"
+    android:minResizeHeight="40dp"
+
+    android:minWidth="110dp"
+    android:previewImage="@drawable/widget_preview"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="3600000"
+    android:widgetCategory="home_screen"
+    android:autoAdvanceViewId="@id/example_widget_stack_view"/>
+
+
+<!--    android:initialLayout="@layout/example_widget"-->
+
+
+# ExampleAppWidgetConfig.java
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RemoteViews;
+
+public class ExampleAppWidgetConfig extends AppCompatActivity {
+
+    public static final String SHARED_PRES = "prefs";
+    public static final String KEY_BUTTON_TEXT = "keyButtonText";
+
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private EditText editTextButton;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_example_app_widget_config);
+
+        Intent configIntent = getIntent();
+
+        Bundle extras = configIntent.getExtras();
+        if (extras!=null) {
+            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            Log.i("debug", "ExampleAppWidgetConfig->onCreate function called when extras is not null: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID));
+        }
+
+
+        Log.i("debug", "ExampleAppWidgetConfig->onCreate: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID));
+
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        setResult(RESULT_CANCELED,resultValue);
+
+        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+
+            finish();
+            Log.i("debug", "ExampleAppWidgetConfig->onCreate when invalid appwidget id: "+extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID));
+
+        }
+
+        editTextButton = findViewById(R.id.id_edit_text_button);
+    }
+
+    public void confirmConfiguration(View view) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+        String buttonText = editTextButton.getText().toString();
+
+        Intent serviceIntent = new Intent(this,ExampleWidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        RemoteViews views = new RemoteViews(this.getPackageName(),R.layout.example_widget);
+        views.setOnClickPendingIntent(R.id.id_example_widget_button,pendingIntent);
+        views.setCharSequence(R.id.id_example_widget_button,"setText",buttonText);
+        views.setRemoteAdapter(R.id.example_widget_stack_view,serviceIntent);
+        views.setEmptyView(R.id.example_widget_stack_view,R.id.example_widget_empty_view);
+
+
+
+
+
+
+//        views.setInt(R.id.id_example_widget_button,"setBackgroundColor",
+//                Color.RED);
+//        views.setBoolean(R.id.id_example_widget_button,"setEnabled",true);
+
+
+        appWidgetManager.updateAppWidget(appWidgetId,views);
+        SharedPreferences prefs = getSharedPreferences(SHARED_PRES,MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_BUTTON_TEXT+appWidgetId,buttonText);
+        Log.i("debug", "ExampleAppWidgetConfig->onCreate: "+  buttonText);
+        editor.apply();
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        setResult(RESULT_OK,resultValue);
+        finish();
+    }
+}
+
+# ExampleAppWidgetProvider.java
+
+
+
+import static com.example.appwidgetapplication.ExampleAppWidgetConfig.KEY_BUTTON_TEXT;
+import static com.example.appwidgetapplication.ExampleAppWidgetConfig.SHARED_PRES;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
+public class ExampleAppWidgetProvider extends AppWidgetProvider {
+
+    @Override
+    public void onUpdate(Context context,
+                         AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+
+        for (int appWidgetId : appWidgetIds) {
+
+            Toast.makeText(context, "onUpdated", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context,MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+
+            SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES,Context.MODE_PRIVATE);
+
+            String buttonText = prefs.getString(KEY_BUTTON_TEXT+appWidgetId,"Press me");
+
+            Log.i("debug", "onUpdate: called when widget is updated "+appWidgetIds.length
+                    );
+
+            Log.i("debug", "onUpdate: called when widget is updated"+
+                    prefs.getString(KEY_BUTTON_TEXT+appWidgetId,"Press me"));
+            Log.i("debug", "onUpdate: called when widget is updated and appwidgetid"+
+                    appWidgetId);
+            Log.i("debug", "onUpdate: called when widget is updated and buttontext"+
+                    buttonText);
+
+
+            Intent serviceIntent = new Intent(context,ExampleWidgetService.class);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+
+            serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+
+
+
+            RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_widget);
+
+            views.setOnClickPendingIntent(R.id.id_example_widget_button,pendingIntent);
+
+            views.setCharSequence(R.id.id_example_widget_button,"setText",buttonText);
+
+            views.setRemoteAdapter(R.id.example_widget_stack_view,serviceIntent);
+            views.setEmptyView(R.id.example_widget_stack_view,R.id.example_widget_empty_view);
+
+            Bundle appWidgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
+
+            resizeWidget(appWidgetOptions,views);
+
+            appWidgetManager.updateAppWidget(appWidgetId,views);
+
+        }
+
+    }
+
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        RemoteViews views = new RemoteViews(
+                context.getPackageName(),
+                R.layout.example_widget
+
+
+        );
+
+
+        resizeWidget(newOptions,views);
+
+
+
+
+
+
+
+        appWidgetManager.updateAppWidget(appWidgetId,views);
+    }
+
+
+    private void resizeWidget(Bundle appWidgetOptions, RemoteViews views) {
+
+        int minWidth = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int maxWidth = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+        int minHeight = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        int maxHeight = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        if (maxHeight > 100) {
+
+            views.setViewVisibility(R.id.id_example_widget_text, View.VISIBLE);
+            views.setViewVisibility(R.id.id_example_widget_button, View.VISIBLE);
+        } else {
+            views.setViewVisibility(R.id.id_example_widget_text,View.GONE);
+            views.setViewVisibility(R.id.id_example_widget_button,View.GONE);
+        }
+
+    }
+
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        Toast.makeText(context, "onDeleted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        Toast.makeText(context, "onEnabled", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        Toast.makeText(context, "onDisabled", Toast.LENGTH_SHORT).show();
+    }
+}
+
+# ExampleWidgetService.java
+
+
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.os.SystemClock;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+
+public class ExampleWidgetService extends RemoteViewsService {
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new ExampleWidgetItemFactory(getApplicationContext(),intent);
+    }
+
+
+    class ExampleWidgetItemFactory implements RemoteViewsFactory {
+
+        private Context context;
+        private int appWidgetId;
+        private String[] exampleData = {
+                "one","two","three","four","five","six","seven","eight","nine","ten"
+        };
+
+        public ExampleWidgetItemFactory(Context context, Intent intent) {
+            this.context = context;
+            this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        @Override
+        public void onCreate() {
+
+            // connect to data source
+            SystemClock.sleep(3000);
+
+        }
+
+        @Override
+        public void onDataSetChanged() {
+
+        }
+
+        @Override
+        public void onDestroy() {
+
+            // close data source
+
+        }
+
+        @Override
+        public int getCount() {
+            return exampleData.length;
+        }
+
+        @Override
+        public RemoteViews getViewAt(int i) {
+
+            RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_widget_item);
+            views.setTextViewText(R.id.example_widget_item_text,exampleData[i]);
+            SystemClock.sleep(500);
+            return views;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+    }
+}
+
+# MainActivity.java
+
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Log.i("debug", "onCreate: mainactivity is called ");
+    }
+}
+
+
