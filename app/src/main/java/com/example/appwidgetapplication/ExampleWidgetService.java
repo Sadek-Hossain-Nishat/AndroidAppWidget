@@ -1,5 +1,7 @@
 package com.example.appwidgetapplication;
 
+import static com.example.appwidgetapplication.ExampleAppWidgetProvider.EXTRA_ITEM_POSITION;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +59,9 @@ public class ExampleWidgetService extends RemoteViewsService {
 
             RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_widget_item);
             views.setTextViewText(R.id.example_widget_item_text,exampleData[i]);
+            Intent fillIntent = new Intent();
+            fillIntent.putExtra(EXTRA_ITEM_POSITION,i);
+            views.setOnClickFillInIntent(R.id.example_widget_item_text,fillIntent);
             SystemClock.sleep(500);
             return views;
         }

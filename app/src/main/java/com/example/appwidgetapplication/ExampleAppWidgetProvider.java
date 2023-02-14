@@ -18,6 +18,9 @@ import android.widget.Toast;
 
 public class ExampleAppWidgetProvider extends AppWidgetProvider {
 
+    public static final String ACTION_TOAST = "actionToast";
+    public static final String EXTRA_ITEM_POSITION="extraItemPosition";
+
     @Override
     public void onUpdate(Context context,
                          AppWidgetManager appWidgetManager,
@@ -26,8 +29,8 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
 
             Toast.makeText(context, "onUpdated", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context,MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+            Intent buttonIntent = new Intent(context,MainActivity.class);
+            PendingIntent buttonPendingIntent = PendingIntent.getActivity(context,0,buttonIntent,0);
 
             SharedPreferences prefs = context.getSharedPreferences(SHARED_PRES,Context.MODE_PRIVATE);
 
@@ -43,6 +46,7 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             Log.i("debug", "onUpdate: called when widget is updated and buttontext"+
                     buttonText);
 
+            // it is responsible service intent to create adapter click view
 
             Intent serviceIntent = new Intent(context,ExampleWidgetService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
@@ -50,16 +54,24 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
 
+            Intent clickIntent = new Intent(context,ExampleAppWidgetProvider.class);
+            clickIntent.setAction(ACTION_TOAST);
+            PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
+                    0,clickIntent,0);
+
+
 
 
             RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_widget);
 
-            views.setOnClickPendingIntent(R.id.id_example_widget_button,pendingIntent);
+            views.setOnClickPendingIntent(R.id.id_example_widget_button,buttonPendingIntent);
 
             views.setCharSequence(R.id.id_example_widget_button,"setText",buttonText);
 
             views.setRemoteAdapter(R.id.example_widget_stack_view,serviceIntent);
             views.setEmptyView(R.id.example_widget_stack_view,R.id.example_widget_empty_view);
+
+            views.setPendingIntentTemplate(R.id.example_widget_stack_view,clickPendingIntent);
 
             Bundle appWidgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
@@ -126,5 +138,18 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         Toast.makeText(context, "onDisabled", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        if (ACTION_TOAST.equals(intent.getAction())) {
+
+            int clickedPosition =  intent.getIntExtra(EXTRA_ITEM_POSITION,0);
+            Toast.makeText(context, "Clicke position: "+clickedPosition, Toast.LENGTH_SHORT).show();
+
+        }
+        super.onReceive(context, intent);
     }
 }
