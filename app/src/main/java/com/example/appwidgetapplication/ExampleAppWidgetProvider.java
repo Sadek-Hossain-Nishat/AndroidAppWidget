@@ -18,8 +18,9 @@ import android.widget.Toast;
 
 public class ExampleAppWidgetProvider extends AppWidgetProvider {
 
-    public static final String ACTION_TOAST = "actionToast";
-    public static final String EXTRA_ITEM_POSITION="extraItemPosition";
+    public static final String ACTION_REFRESH = "actionRefresh";
+
+
 
     @Override
     public void onUpdate(Context context,
@@ -55,7 +56,7 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
 
 
             Intent clickIntent = new Intent(context,ExampleAppWidgetProvider.class);
-            clickIntent.setAction(ACTION_TOAST);
+            clickIntent.setAction(ACTION_REFRESH);
             PendingIntent clickPendingIntent = PendingIntent.getBroadcast(context,
                     0,clickIntent,0);
 
@@ -78,6 +79,7 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
             resizeWidget(appWidgetOptions,views);
 
             appWidgetManager.updateAppWidget(appWidgetId,views);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.example_widget_stack_view);
 
         }
 
@@ -144,10 +146,14 @@ public class ExampleAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (ACTION_TOAST.equals(intent.getAction())) {
+        if (ACTION_REFRESH.equals(intent.getAction())) {
 
-            int clickedPosition =  intent.getIntExtra(EXTRA_ITEM_POSITION,0);
-            Toast.makeText(context, "Clicke position: "+clickedPosition, Toast.LENGTH_SHORT).show();
+            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.example_widget_stack_view);
 
         }
         super.onReceive(context, intent);

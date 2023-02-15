@@ -1,6 +1,6 @@
 package com.example.appwidgetapplication;
 
-import static com.example.appwidgetapplication.ExampleAppWidgetProvider.EXTRA_ITEM_POSITION;
+
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 public class ExampleWidgetService extends RemoteViewsService {
     @Override
@@ -33,12 +36,25 @@ public class ExampleWidgetService extends RemoteViewsService {
         public void onCreate() {
 
             // connect to data source
-            SystemClock.sleep(3000);
+
 
         }
 
         @Override
         public void onDataSetChanged() {
+            // refresh date
+
+            Date date = new Date();
+            String timeFormatted = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+            exampleData = new String[]{
+                    "one\n"+timeFormatted,
+                    "two\n"+timeFormatted,
+                    "three\n"+timeFormatted
+
+
+            };
+
+            SystemClock.sleep(3000);
 
         }
 
@@ -60,7 +76,7 @@ public class ExampleWidgetService extends RemoteViewsService {
             RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_widget_item);
             views.setTextViewText(R.id.example_widget_item_text,exampleData[i]);
             Intent fillIntent = new Intent();
-            fillIntent.putExtra(EXTRA_ITEM_POSITION,i);
+            fillIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
             views.setOnClickFillInIntent(R.id.example_widget_item_text,fillIntent);
             SystemClock.sleep(500);
             return views;

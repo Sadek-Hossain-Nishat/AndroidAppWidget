@@ -1,6 +1,6 @@
 package com.example.appwidgetapplication;
 
-import static com.example.appwidgetapplication.ExampleAppWidgetProvider.ACTION_TOAST;
+import static com.example.appwidgetapplication.ExampleAppWidgetProvider.ACTION_REFRESH;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,7 +71,7 @@ public class ExampleAppWidgetConfig extends AppCompatActivity {
 
         Intent clickIntent =  new Intent(this,
                 ExampleAppWidgetProvider.class);
-        clickIntent.setAction(ACTION_TOAST);
+        clickIntent.setAction(ACTION_REFRESH);
 
         PendingIntent clickPendingIntent =PendingIntent.getBroadcast(this,0,clickIntent,0);
 
